@@ -35,6 +35,23 @@ class Perform2SequentialNetworkRequestsViewModelTest {
         )
     }
 
+    @Test
+    fun `should return Error when second network request fails`() = runTest {
+        val fakeApi = FakeFeaturesErrorApi()
+        val viewModel = Perform2SequentialNetworkRequestsViewModel(fakeApi)
+        observeViewModel(viewModel)
+
+        viewModel.perform2SequentialNetworkRequest()
+
+        assertEquals(
+            listOf(
+                UiState.Loading,
+                UiState.Error("Network request failed")
+            ),
+            receivedUiStates,
+        )
+    }
+
     private fun observeViewModel(viewModel: Perform2SequentialNetworkRequestsViewModel) {
         viewModel.uiState().observeForever { uiState ->
             if (uiState != null) {
