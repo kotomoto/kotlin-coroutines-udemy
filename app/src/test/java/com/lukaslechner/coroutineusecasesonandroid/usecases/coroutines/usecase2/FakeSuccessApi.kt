@@ -7,7 +7,6 @@ import com.lukaslechner.coroutineusecasesonandroid.mock.mockAndroidVersions
 import com.lukaslechner.coroutineusecasesonandroid.mock.mockVersionFeaturesAndroid10
 import com.lukaslechner.coroutineusecasesonandroid.mock.mockVersionFeaturesOreo
 import com.lukaslechner.coroutineusecasesonandroid.mock.mockVersionFeaturesPie
-import com.lukaslechner.coroutineusecasesonandroid.utils.EndpointShouldNotBeCalledException
 
 class FakeSuccessApi : MockApi {
     override suspend fun getRecentAndroidVersions(): List<AndroidVersion> {
