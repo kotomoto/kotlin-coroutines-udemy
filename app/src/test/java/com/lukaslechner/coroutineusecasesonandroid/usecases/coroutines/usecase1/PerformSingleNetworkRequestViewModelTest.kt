@@ -2,15 +2,10 @@ package com.lukaslechner.coroutineusecasesonandroid.usecases.coroutines.usecase1
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.lukaslechner.coroutineusecasesonandroid.mock.mockAndroidVersions
-import kotlinx.coroutines.Dispatchers
+import com.lukaslechner.coroutineusecasesonandroid.utils.ReplaceMainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -21,15 +16,8 @@ class PerformSingleNetworkRequestViewModelTest {
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
 
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+    @get:Rule
+    val mainDispatcherRule = ReplaceMainDispatcherRule()
 
     private val receivedUiStates = mutableListOf<UiState>()
 
@@ -49,7 +37,7 @@ class PerformSingleNetworkRequestViewModelTest {
     }
 
     @Test
-    fun `should return Error when network request fails`() {
+    fun `should return Error when network request fails`() = runTest {
         val fakeApi = FakeErrorApi()
         val viewModel = PerformSingleNetworkRequestViewModel(fakeApi)
 
